@@ -2,22 +2,23 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:template_flutter_but/application/injections/initializer.dart';
 import 'package:template_flutter_but/domain/repository/places.repository.dart';
 import 'package:template_flutter_but/ui/abstraction/view_model_abs.dart';
-import 'package:template_flutter_but/ui/screens/home.state.dart';
+import 'package:template_flutter_but/ui/screens/home/home.state.dart';
+import 'package:template_flutter_but/ui/screens/maps/maps.state.dart';
 
 ///
-final StateNotifierProvider<HomeViewModel, HomeState> homeProvider =
-    StateNotifierProvider<HomeViewModel, HomeState>(
-  (StateNotifierProviderRef<HomeViewModel, HomeState> ref) => HomeViewModel(
+final StateNotifierProvider<MapsViewModel, MapsState> homeProvider =
+    StateNotifierProvider<MapsViewModel, MapsState>(
+  (StateNotifierProviderRef<MapsViewModel, MapsState> ref) => MapsViewModel(
     placesRepository: injector<PlacesRepository>(),
   ),
 );
 
-class HomeViewModel extends ViewModelAbs<HomeViewModel, HomeState> {
+class MapsViewModel extends ViewModelAbs<MapsViewModel, MapsState> {
   final PlacesRepository _placesRepository;
 
-  HomeViewModel({required PlacesRepository placesRepository})
+  MapsViewModel({required PlacesRepository placesRepository})
       : _placesRepository = placesRepository,
-        super(const HomeState.initial()) {
+        super(const MapsState.initial()) {
     _init();
   }
 
