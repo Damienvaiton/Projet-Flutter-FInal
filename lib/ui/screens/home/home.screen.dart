@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:template_flutter_but/domain/entities/result.entity.dart';
 import 'package:template_flutter_but/ui/screens/home/home.state.dart';
 import 'package:template_flutter_but/ui/screens/home/home.viewmodel.dart';
 
@@ -11,16 +12,23 @@ class HomeScreen extends ConsumerStatefulWidget {
 }
 
 class _HomeScreeenState extends ConsumerState<HomeScreen> {
-  List<String> list = [];
+  
 
   @override
   Widget build(BuildContext context) {
+    
     final HomeState state = ref.watch(homeProvider);
+    List<ResultEntity>? list = state.placeEntity!.results;
 
-    return Column(
-      children: [
-        state.loading ? const CircularProgressIndicator() : const Text('Home')
-      ],
-    );
+    return state.loading
+        ? const Center(child: CircularProgressIndicator())
+        : ListView.builder(
+            itemCount: state.placeEntity!.results!.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                
+              );
+            },
+          );
   }
 }
