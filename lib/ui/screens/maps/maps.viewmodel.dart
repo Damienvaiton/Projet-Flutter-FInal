@@ -36,17 +36,19 @@ class MapsViewModel extends ViewModelAbs<MapsViewModel, MapsState> {
     updateLoading(true);
     List<Marker> markersList;
     markersList = List.from(state.markersList);
-    markersList.add(Marker(
-      markerId: MarkerId(geoPoint.monumHisComId.toString()),
-      position: LatLng(
-        double.parse(geoPoint.lat ?? "0"),
-        double.parse(geoPoint.long ?? "0"),
-      ),
-      infoWindow: InfoWindow(
-        title: geoPoint.appellationCourante ?? "",
-        snippet: geoPoint.niveauDeProtection ?? "",
-      ),
-    ));
+    if (geoPoint.lat != null || geoPoint.long != null) {
+      markersList.add(Marker(
+        markerId: MarkerId(geoPoint.monumHisComId.toString()),
+        position: LatLng(
+          double.parse(geoPoint.lat ?? "0"),
+          double.parse(geoPoint.long ?? "0"),
+        ),
+        infoWindow: InfoWindow(
+          title: geoPoint.appellationCourante ?? "",
+          snippet: geoPoint.niveauDeProtection ?? "",
+        ),
+      ));
+    }
     state = state.copyWith(markersList: markersList);
     updateLoading(false);
   }
