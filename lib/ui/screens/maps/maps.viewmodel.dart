@@ -25,9 +25,8 @@ final StateNotifierProvider<MapsViewModel, MapsState> mapsProvider =
 
 class MapsViewModel extends ViewModelAbs<MapsViewModel, MapsState> {
   final PlacesRepository _placesRepository;
-  final BuildContext context;
 
-  MapsViewModel({required PlacesRepository placesRepository, required this.context})
+  MapsViewModel({required PlacesRepository placesRepository})
       : _placesRepository = placesRepository,
         super(const MapsState.initial()) {
     _init();
@@ -36,7 +35,7 @@ class MapsViewModel extends ViewModelAbs<MapsViewModel, MapsState> {
     state = state.copyWith(loading: value);
   }
 
-  void addGeoPoint(BuildContext context,ResultEntity geoPoint) {
+  void addGeoPoint(ResultEntity geoPoint) {
     updateLoading(true);
     List<Marker> markersList;
     markersList = List.from(state.markersList);
@@ -51,12 +50,6 @@ class MapsViewModel extends ViewModelAbs<MapsViewModel, MapsState> {
           title: geoPoint.appellationCourante ?? "",
           snippet: geoPoint.niveauDeProtection ?? "",
         ),
-        onTap: () {
-          showDetailDialog(
-            context,
-            geoPoint,
-          );
-        },
       ));
     }
     state = state.copyWith(markersList: markersList);
@@ -71,46 +64,11 @@ class MapsViewModel extends ViewModelAbs<MapsViewModel, MapsState> {
     updateLoading(true);
     final PlaceEntity placeEntity = await _placesRepository.getPlaces();
     for (ResultEntity result in placeEntity.results!) {
-      addGeoPoint(context,result);
-    }
+      addGeoPoint(result);
+    
     updateLoading(false);
   }
 
-Future<void> showDetailDialog(BuildContext context, ResultEntity data) async {
-    return showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-              title: Text(data.appellationCourante ?? 'No name'),
-              content: SingleChildScrollView(
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: [
-                        const Text("Protection : "),
-                        Text(data.niveauDeProtection ?? "No protection")
-                      ],
-                    ),
-                    Image(
-                      image: NetworkImage(data.photo?.url ??
-                          'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png'),
-                      fit: BoxFit.cover,
-                    ),
-                    Text(data.appellationCourante ?? 'No name',
-                        style: const TextStyle(
-                            fontSize: 15.0, fontWeight: FontWeight.bold)),
-                    Text(data.adresseBanSig ?? 'No address',
-                        style: const TextStyle(fontSize: 10.0)),
-                    Text(
-                      data.historique ?? 'No description',
-                      style: const TextStyle(fontSize: 8.0),
-                    ),
-                  ],
-                ),
-              ));
-        });
-  }
 
-
-
+}
 }
