@@ -9,6 +9,8 @@ part of 'maps.state.dart';
 abstract class _$MapsStateCWProxy {
   MapsState loading(bool loading);
 
+  MapsState markersList(List<Marker> markersList);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `MapsState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -17,6 +19,7 @@ abstract class _$MapsStateCWProxy {
   /// ````
   MapsState call({
     bool? loading,
+    List<Marker>? markersList,
   });
 }
 
@@ -30,6 +33,10 @@ class _$MapsStateCWProxyImpl implements _$MapsStateCWProxy {
   MapsState loading(bool loading) => this(loading: loading);
 
   @override
+  MapsState markersList(List<Marker> markersList) =>
+      this(markersList: markersList);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `MapsState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -39,12 +46,18 @@ class _$MapsStateCWProxyImpl implements _$MapsStateCWProxy {
   /// ````
   MapsState call({
     Object? loading = const $CopyWithPlaceholder(),
+    Object? markersList = const $CopyWithPlaceholder(),
   }) {
     return MapsState(
       loading: loading == const $CopyWithPlaceholder() || loading == null
           ? _value.loading
           // ignore: cast_nullable_to_non_nullable
           : loading as bool,
+      markersList:
+          markersList == const $CopyWithPlaceholder() || markersList == null
+              ? _value.markersList
+              // ignore: cast_nullable_to_non_nullable
+              : markersList as List<Marker>,
     );
   }
 }
