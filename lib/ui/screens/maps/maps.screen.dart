@@ -38,7 +38,6 @@ class _MapsScreenState extends ConsumerState<MapsScreen> {
                       position: marker.position,
                       infoWindow: marker.infoWindow,
                     ),
-                    
                 },
                 ),
               ),
