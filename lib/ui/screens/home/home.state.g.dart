@@ -11,6 +11,8 @@ abstract class _$HomeStateCWProxy {
 
   HomeState placeEntity(PlaceEntity? placeEntity);
 
+  HomeState favoriteList(List<ResultEntity> favoriteList);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `HomeState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -20,6 +22,7 @@ abstract class _$HomeStateCWProxy {
   HomeState call({
     bool? loading,
     PlaceEntity? placeEntity,
+    List<ResultEntity>? favoriteList,
   });
 }
 
@@ -37,6 +40,10 @@ class _$HomeStateCWProxyImpl implements _$HomeStateCWProxy {
       this(placeEntity: placeEntity);
 
   @override
+  HomeState favoriteList(List<ResultEntity> favoriteList) =>
+      this(favoriteList: favoriteList);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `HomeState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -47,6 +54,7 @@ class _$HomeStateCWProxyImpl implements _$HomeStateCWProxy {
   HomeState call({
     Object? loading = const $CopyWithPlaceholder(),
     Object? placeEntity = const $CopyWithPlaceholder(),
+    Object? favoriteList = const $CopyWithPlaceholder(),
   }) {
     return HomeState(
       loading: loading == const $CopyWithPlaceholder() || loading == null
@@ -57,6 +65,11 @@ class _$HomeStateCWProxyImpl implements _$HomeStateCWProxy {
           ? _value.placeEntity
           // ignore: cast_nullable_to_non_nullable
           : placeEntity as PlaceEntity?,
+      favoriteList:
+          favoriteList == const $CopyWithPlaceholder() || favoriteList == null
+              ? _value.favoriteList
+              // ignore: cast_nullable_to_non_nullable
+              : favoriteList as List<ResultEntity>,
     );
   }
 }

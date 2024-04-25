@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:template_flutter_but/foundation/enums/format.enum.dart';
 import 'package:template_flutter_but/domain/entities/photo.entity.dart';
 
 part 'photo.model.g.dart';
@@ -10,8 +9,7 @@ class PhotoModel {
   final int? exifOrientation;
   final bool? thumbnail;
   final String? filename;
-  @JsonKey(unknownEnumValue: FormatEnum.none)
-  final FormatEnum? format;
+  final String? format;
   final int? width;
   final String? id;
   final int? height;

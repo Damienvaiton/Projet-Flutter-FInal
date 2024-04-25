@@ -21,9 +21,11 @@ class _HomeScreeenState extends ConsumerState<HomeScreen> {
     List<ResultEntity>? list = state.placeEntity!.results;
     final HomeViewModel viewModel = ref.read(homeProvider.notifier);
 
+
     return state.loading
         ? const Center(child: CircularProgressIndicator())
         : ListView.builder(
+          controller: viewModel.scrollController ,
             itemCount: state.placeEntity!.results!.length,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(

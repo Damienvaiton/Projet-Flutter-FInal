@@ -1,3 +1,4 @@
+import 'package:hive/hive.dart';
 import 'package:template_flutter_but/domain/entities/result.entity.dart';
 
 class PlaceEntity {
