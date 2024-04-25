@@ -10,8 +10,7 @@ PhotoModel _$PhotoModelFromJson(Map<String, dynamic> json) => PhotoModel(
       exifOrientation: json['exif_orientation'] as int?,
       thumbnail: json['thumbnail'] as bool?,
       filename: json['filename'] as String?,
-      format: $enumDecodeNullable(_$FormatEnumEnumMap, json['format'],
-          unknownValue: FormatEnum.none),
+      format: json['format'] as String?,
       width: json['width'] as int?,
       id: json['id'] as String?,
       height: json['height'] as int?,
@@ -26,15 +25,10 @@ Map<String, dynamic> _$PhotoModelToJson(PhotoModel instance) =>
       'exif_orientation': instance.exifOrientation,
       'thumbnail': instance.thumbnail,
       'filename': instance.filename,
-      'format': _$FormatEnumEnumMap[instance.format],
+      'format': instance.format,
       'width': instance.width,
       'id': instance.id,
       'height': instance.height,
       'color_summary': instance.colorSummary,
       'url': instance.url,
     };
-
-const _$FormatEnumEnumMap = {
-  FormatEnum.jpeg: 'JPEG',
-  FormatEnum.none: 'none',
-};
