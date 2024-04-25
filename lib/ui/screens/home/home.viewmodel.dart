@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +22,7 @@ final StateNotifierProvider<HomeViewModel, HomeState> homeProvider =
 
 class HomeViewModel extends ViewModelAbs<HomeViewModel, HomeState> {
   final PlacesRepository _placesRepository;
+  final ScrollController scrollController = ScrollController();
 
   HomeViewModel({required PlacesRepository placesRepository})
       : _placesRepository = placesRepository,
@@ -37,7 +39,22 @@ class HomeViewModel extends ViewModelAbs<HomeViewModel, HomeState> {
   }
 
   void _init() {
-    getPlaces();
+    scrollController.addListener(scrollListen);
+    getPaginatePlaces(0);
+  }
+
+  void addPlaces(PlaceEntity placeEntity) {
+    PlaceEntity? currenPlace = state.placeEntity;
+    currenPlace!.results!.addAll(placeEntity.results!);
+    state = state.copyWith(placeEntity: currenPlace);
+  }
+
+  void scrollListen() {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
+      print(state.placeEntity!.results!.length);
+      loadMore(state.placeEntity!.results!.length);
+    }
   }
 
   void getPlaces() async {
@@ -47,12 +64,20 @@ class HomeViewModel extends ViewModelAbs<HomeViewModel, HomeState> {
     updatePlaceModel(placeEntity);
   }
 
+  void loadMore(int offset) {
+    getPaginatePlaces(offset);
+  }
+
   void getPaginatePlaces(int offset) async {
     updateLoading(true);
     final PlaceEntity placeEntity =
         await _placesRepository.getPaginatePlaces(offset);
     updateLoading(false);
-    updatePlaceModel(placeEntity);
+    if (state.placeEntity == null) {
+      updatePlaceModel(placeEntity);
+    } else {
+      addPlaces(placeEntity);
+    }
   }
 
   Future<void> showDetailDialog(BuildContext context, ResultEntity data) async {

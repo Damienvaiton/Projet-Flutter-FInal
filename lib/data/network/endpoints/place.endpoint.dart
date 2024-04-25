@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart' hide Headers;
+import 'package:flutter/foundation.dart';
 import 'package:injectable/injectable.dart';
 import 'package:retrofit/http.dart';
 import 'package:retrofit/retrofit.dart';
@@ -25,5 +26,9 @@ abstract class PlacesEndpoint {
 
   ///
   @GET('/liste-monuments-historiques-de-roubaix@ville-de-roubaix/records')
-  Future<PlaceModel> getPaginatePlaces({@Query('limit') int limit = 15, @Query('offset') int offset});
+  Future<PlaceModel> getPaginatePlaces({
+    @Query('limit') int limit = 15,
+    @Query('offset') required int offset,
+  });
+
 }
