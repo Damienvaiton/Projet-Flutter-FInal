@@ -1,5 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:template_flutter_but/domain/entities/favorite.monument.entity.dart';
 import 'package:template_flutter_but/domain/entities/geo_point_2d.entity.dart';
+import 'package:template_flutter_but/domain/entities/monuments.entity.dart';
 import 'package:template_flutter_but/domain/entities/photo.entity.dart';
 
 
@@ -84,4 +86,61 @@ class ResultEntity {
   String toString() {
     return 'ResultEntity{monumHisComId: $monumHisComId, appellationCourante: $appellationCourante, photo: $photo, copyrightEtPropriete: $copyrightEtPropriete, epoque: $epoque, siecle: $siecle, precisionSurLaProtection: $precisionSurLaProtection, dateDeProtection: $dateDeProtection, classement: $classement, statut: $statut, description: $description, historique: $historique, auteur: $auteur, region: $region, departement: $departement, commune: $commune, niveauDeProtection: $niveauDeProtection, codeDepartement: $codeDepartement, insee: $insee, adresseBanSig: $adresseBanSig, geoPoint2D: $geoPoint2D, lat: $lat, long: $long}';
   }
+
+  static ResultEntity fromMonuments (MonumentsEntity monument) {
+    return ResultEntity(
+      monumHisComId: monument.monuments.monumHisComId,
+      appellationCourante: monument.monuments.appellationCourante,
+      copyrightEtPropriete: monument.monuments.copyrightEtPropriete,
+      photo: monument.monuments.photo,
+      adresseBanSig: monument.monuments.adresseBanSig,
+      auteur: monument.monuments.auteur,
+      classement: monument.monuments.classement,
+      codeDepartement: monument.monuments.codeDepartement,
+      commune: monument.monuments.commune,
+      dateDeProtection: monument.monuments.dateDeProtection,
+      departement: monument.monuments.departement,
+      description: monument.monuments.description,
+      epoque: monument.monuments.epoque,
+      geoPoint2D: monument.monuments.geoPoint2D,
+      historique: monument.monuments.historique,
+      insee: monument.monuments.insee,
+      lat: monument.monuments.lat,
+      long: monument.monuments.long,
+      niveauDeProtection: monument.monuments.niveauDeProtection,
+      precisionSurLaProtection: monument.monuments.precisionSurLaProtection,
+      region: monument.monuments.region,
+      siecle: monument.monuments.siecle,
+      statut: monument.monuments.statut,
+    );
+  }
+  
+  static ResultEntity fromFavoriteMonuments(FavoriteMonuments monuments){
+    return ResultEntity(
+      monumHisComId: monuments.result.monumHisComId,
+      appellationCourante: monuments.result.appellationCourante,
+      photo: monuments.result.photo,
+      copyrightEtPropriete: monuments.result.copyrightEtPropriete,
+      adresseBanSig: monuments.result.adresseBanSig,
+      auteur: monuments.result.auteur,
+      classement: monuments.result.classement,
+      codeDepartement: monuments.result.codeDepartement,
+      commune: monuments.result.commune,
+      dateDeProtection: monuments.result.dateDeProtection,
+      departement: monuments.result.departement,
+      description: monuments.result.description,
+      epoque: monuments.result.epoque,
+      geoPoint2D: monuments.result.geoPoint2D,
+      historique: monuments.result.historique,
+      insee: monuments.result.insee,
+      lat: monuments.result.lat,
+      long: monuments.result.long,
+      niveauDeProtection: monuments.result.niveauDeProtection,
+      precisionSurLaProtection: monuments.result.precisionSurLaProtection,
+      region: monuments.result.region,
+      siecle: monuments.result.siecle,
+      statut: monuments.result.statut,
+    );
+  }
+
 }

@@ -5,12 +5,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:template_flutter_but/application/injections/initializer.dart';
 import 'package:template_flutter_but/data/local/database.helper.dart';
 import 'package:template_flutter_but/domain/entities/favorite.monument.entity.dart';
+import 'package:template_flutter_but/domain/entities/monuments.entity.dart';
 import 'package:template_flutter_but/domain/entities/place.entity.dart';
 import 'package:template_flutter_but/domain/entities/result.entity.dart';
 import 'package:template_flutter_but/domain/repository/places.repository.dart';
 import 'package:template_flutter_but/foundation/client/dio.client.dart';
 import 'package:template_flutter_but/ui/abstraction/view_model_abs.dart';
 import 'package:template_flutter_but/ui/screens/home/home.state.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 ///
 final StateNotifierProvider<HomeViewModel, HomeState> homeProvider =
@@ -38,14 +40,23 @@ class HomeViewModel extends ViewModelAbs<HomeViewModel, HomeState> {
     state = state.copyWith(placeEntity: placeEntity);
   }
 
-  void _init() {
-    scrollController.addListener(scrollListen);
-    getPaginatePlaces(0);
+  PlaceEntity loadMonumentsFromDB(List<MonumentsEntity> monuments) {
+    List<ResultEntity> results = monuments
+        .map((monument) => ResultEntity.fromMonuments(monument))
+        .toList();
+    return PlaceEntity(totalCount: monuments.length, results: results);
+  }
+
+  PlaceEntity loadMonumentsFavoriteFromDB(List<FavoriteMonuments> monuments) {
+    List<ResultEntity> results = monuments
+        .map((monument) => ResultEntity.fromFavoriteMonuments(monument))
+        .toList();
+    return PlaceEntity(totalCount: monuments.length, results: results);
   }
 
   void addPlaces(PlaceEntity placeEntity) {
     PlaceEntity? currenPlace = state.placeEntity;
-    currenPlace!.results!.addAll(placeEntity.results!);
+    currenPlace!.results!.addAll(placeEntity.results as Iterable<ResultEntity>);
     state = state.copyWith(placeEntity: currenPlace);
   }
 
@@ -57,11 +68,18 @@ class HomeViewModel extends ViewModelAbs<HomeViewModel, HomeState> {
     }
   }
 
-  void getPlaces() async {
+  Future<bool> isInternet() async {
+    var result = await InternetConnection().hasInternetAccess;
+    return result;
+  }
+
+  void getLocalPlaces() async {
     updateLoading(true);
-    final PlaceEntity placeEntity = await _placesRepository.getPlaces();
+    List<FavoriteMonuments> placeEntity = await DatabaseHelper.getAllFavorite();
+    var taille = placeEntity.length;
+    print("taille de la lise no connect $taille");
     updateLoading(false);
-    updatePlaceModel(placeEntity);
+    updatePlaceModel(loadMonumentsFavoriteFromDB(placeEntity));
   }
 
   void loadMore(int offset) {
@@ -70,6 +88,7 @@ class HomeViewModel extends ViewModelAbs<HomeViewModel, HomeState> {
 
   void getPaginatePlaces(int offset) async {
     updateLoading(true);
+    print("Internet access");
     final PlaceEntity placeEntity =
         await _placesRepository.getPaginatePlaces(offset);
     updateLoading(false);
@@ -77,6 +96,21 @@ class HomeViewModel extends ViewModelAbs<HomeViewModel, HomeState> {
       updatePlaceModel(placeEntity);
     } else {
       addPlaces(placeEntity);
+    }
+  }
+
+  void addMonumentsInDB(PlaceEntity place) {
+    for (ResultEntity res in place.results!) {
+      DatabaseHelper.addMonuments(res);
+    }
+  }
+
+  void _init() async {
+    scrollController.addListener(scrollListen);
+    if (await isInternet()) {
+      getPaginatePlaces(0);
+    } else {
+      getLocalPlaces();
     }
   }
 
