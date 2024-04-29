@@ -61,10 +61,12 @@ class HomeViewModel extends ViewModelAbs<HomeViewModel, HomeState> {
   }
 
   void scrollListen() {
-    if (scrollController.position.pixels ==
-        scrollController.position.maxScrollExtent) {
-      print(state.placeEntity!.results!.length);
-      loadMore(state.placeEntity!.results!.length);
+    if (state.placeEntity!.results!.length < 43) {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        print(state.placeEntity!.results!.length);
+        loadMore(state.placeEntity!.results!.length);
+      }
     }
   }
 
