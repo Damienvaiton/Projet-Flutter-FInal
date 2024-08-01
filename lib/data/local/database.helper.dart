@@ -23,6 +23,13 @@ class DatabaseHelper {
     await box.add(FavoriteMonuments(result: entity));
   }
 
+  static Future<void> removeFavorite(ResultEntity entity) async {
+    final box = await Hive.openBox<FavoriteMonuments>(_Favorite);
+    final key = box.values.firstWhere(
+        (element) => element.result.monumHisComId == entity.monumHisComId);
+    await box.delete(key);
+  }
+
   static Future<List<FavoriteMonuments>> getAllFavorite() async {
     final box = await Hive.openBox<FavoriteMonuments>(_Favorite);
     return box.values.toList();

@@ -159,7 +159,7 @@ class HomeViewModel extends ViewModelAbs<HomeViewModel, HomeState> {
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                  content: Text('Already in favorite')));
+                                  content: Text('Delete in favorite')));
                         }
                       },
                     )
@@ -174,6 +174,7 @@ class HomeViewModel extends ViewModelAbs<HomeViewModel, HomeState> {
     var test2 = await test;
     if (test2.any(
         (element) => element.result.monumHisComId == result.monumHisComId)) {
+      await DatabaseHelper.removeFavorite(result);
       return false;
     }
     await DatabaseHelper.addFavorite(result);
